@@ -1,0 +1,40 @@
+### Criar pauta
+POST http://localhost:8080/api/v1/pautas
+Content-Type: application/json
+
+{
+  "titulo": "Aprovação do novo estatuto",
+  "descricao": "Votação para aprovação do novo estatuto"
+}
+
+### Abrir sessão default 60s
+POST http://localhost:8080/api/v1/pautas/1/sessao
+
+### Abrir sessão com 120s
+POST http://localhost:8080/api/v1/pautas/1/sessao
+Content-Type: application/json
+
+{
+  "duracaoSegundos": 120
+}
+
+### Votar SIM
+POST http://localhost:8080/api/v1/pautas/1/votos
+Content-Type: application/json
+
+{
+  "associadoId": 1001,
+  "voto": "SIM"
+}
+
+### Votar NAO
+POST http://localhost:8080/api/v1/pautas/1/votos
+Content-Type: application/json
+
+{
+  "associadoId": 1002,
+  "voto": "NAO"
+}
+
+### Resultado
+GET http://localhost:8080/api/v1/pautas/1/resultado

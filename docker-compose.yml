@@ -1,0 +1,33 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: votacao-postgres
+    environment:
+      POSTGRES_DB: votacao
+      POSTGRES_USER: votacao
+      POSTGRES_PASSWORD: votacao
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U votacao -d votacao"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build: .
+    container_name: votacao-app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/votacao
+      DB_USERNAME: votacao
+      DB_PASSWORD: votacao
+    ports:
+      - "8080:8080"
+
+volumes:
+  postgres_data:
